@@ -92,12 +92,12 @@ If you want to save it in bower.json file, remember to add flag --save
     <paper-material >
     <paper-menu on-iron-select="_itemSelect">
       <template is="dom-repeat" items="{{_suggestions}}">
-        <template is="dom-if" if="{{isCandidatesJson}}"> 
+        <template is="dom-if" if="{{isCandidatesJson}}">
           <paper-item on-mouseover="_selection" on-tap="_select">
            <span>{{_getDisplayValue(item)}}</span>
           </paper-item>
         </template>
-        <template is="dom-if" if="{{!isCandidatesJson}}"> 
+        <template is="dom-if" if="{{!isCandidatesJson}}">
           <paper-item on-mouseover="_selection" on-tap="_select">
            <span>{{item}}</span>
           </paper-item>
@@ -200,7 +200,7 @@ If you want to save it in bower.json file, remember to add flag --save
         value:undefined
       },
       /**
-       * A boolean property to indicate if elements in the candidates list are json dictionary. 
+       * A boolean property to indicate if elements in the candidates list are json dictionary.
        * When this property set up to be true, the candidates will be treated as list of json objects. Otherwise will be treated as list of strings.
        */
       isCandidatesJson:{
@@ -208,7 +208,7 @@ If you want to save it in bower.json file, remember to add flag --save
         value:false
       },
       /**
-       * An array to tell what property in the json object of candidate is searchable. 
+       * An array to tell what property in the json object of candidate is searchable.
        * This property only makes sense when property isCandidatesJson set to be true.
        */
       searchableProps:{
@@ -244,7 +244,8 @@ If you want to save it in bower.json file, remember to add flag --save
        */
       inputObject:{
         type:Object,
-        notify:true
+        notify:true,
+        observer: "_inputObjectChanged"
       },
       /**
        * Bind this to the <paper-input>'s alwaysFloatLabel property.
@@ -331,6 +332,13 @@ If you want to save it in bower.json file, remember to add flag --save
       //
       // Use this to clean up anything you did in `attached`.
     },
+
+    _inputObjectChanged(inputObject) {
+        if (this.isCandidatesJson == true){
+            this.inputValue = this._getDisplayValue(this.inputObject);
+        }
+    },
+
     _itemSelect:function(e, detail){
       this.fire('pt-item-select',detail);
     },
@@ -375,7 +383,7 @@ If you want to save it in bower.json file, remember to add flag --save
         if (this.isCandidatesJson == true){
           this.inputObject = this._suggestions[index];
           this.inputValue = this._getDisplayValue(this.inputObject);
-        } 
+        }
         else{
           this.inputValue = this._suggestions[index];
         }
@@ -429,7 +437,7 @@ If you want to save it in bower.json file, remember to add flag --save
             if (this.isCandidatesJson == true){
               this.inputObject = this._suggestions[index];
               this.inputValue = this._getDisplayValue(this.inputObject);
-            } 
+            }
             else{
               this.inputValue = this._suggestions[index];
             }
