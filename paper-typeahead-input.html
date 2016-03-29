@@ -342,7 +342,14 @@ If you want to save it in bower.json file, remember to add flag --save
       // Use this to clean up anything you did in `attached`.
     },
 
-    _inputObjectChanged() {
+    _inputObjectChanged: function() {
+        var input = Polymer.dom(this.root).querySelector('paper-input');
+        if (input.focused){
+            this._updateInputValue();
+        }
+    },
+
+    _updateInputValue: function() {
         if (this.isCandidatesJson == true){
             this.inputValue = this._getDisplayValue(this.inputObject);
         }
@@ -391,6 +398,7 @@ If you want to save it in bower.json file, remember to add flag --save
 
         if (this.isCandidatesJson == true){
           this.inputObject = this._suggestions[index];
+          this._updateInputValue();
         }
         else{
           this.inputValue = this._suggestions[index];
@@ -406,12 +414,10 @@ If you want to save it in bower.json file, remember to add flag --save
     },
     _selectIndex: function(index) {
       var suggestionsMenu = Polymer.dom(this.root).querySelector('paper-menu');
-      if (suggestionsMenu && typeof(suggestionsMenu) != 'undefined' && this._suggestions.length > index && index >= 0){
+      if (suggestionsMenu && typeof(suggestionsMenu) != 'undefined' && index in this._suggestions){
         if (this.isCandidatesJson == true){
           this.inputObject = this._suggestions[index];
-        }
-        else{
-          this.inputValue = this._suggestions[index];
+          this._updateInputValue();
         }
         suggestionsMenu.select(index);
       }
@@ -512,6 +518,7 @@ If you want to save it in bower.json file, remember to add flag --save
     _search:function(term){
       if (term == ""){
         this._suggestions = [];
+        this.inputObject = null;
         return;
       }
       var patt =  new RegExp(term.toLowerCase());
