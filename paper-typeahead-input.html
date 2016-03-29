@@ -73,7 +73,9 @@ If you want to save it in bower.json file, remember to add flag --save
     </template>
 
    <div style="position:relative;">
-    <paper-input value="{{inputValue}}" on-keyup="_keyup" on-keydown="_keydown"  label="{{placeholder}}"
+    <paper-input value="{{inputValue}}"
+      on-keyup="_keyup" on-keydown="_keydown" on-blur="_blur" on-change="_blur"
+      label="{{placeholder}}"
       always-float-label="{{alwaysFloatLabel}}"
       autofocus="{{autofocus}}"
       char-counter="{{charCounter}}"
@@ -177,6 +179,13 @@ If you want to save it in bower.json file, remember to add flag --save
       _suggestions:{
         type:Array,
         value:[]
+      },
+      /**
+       * Force inputValue to always correspond to inputObject.
+       */
+      forceSuggestion:{
+        type:Boolean,
+        value:false
       },
       /**
        * Maximum number of suggestions to show up in typeahead.
@@ -333,7 +342,7 @@ If you want to save it in bower.json file, remember to add flag --save
       // Use this to clean up anything you did in `attached`.
     },
 
-    _inputObjectChanged(inputObject) {
+    _inputObjectChanged() {
         if (this.isCandidatesJson == true){
             this.inputValue = this._getDisplayValue(this.inputObject);
         }
@@ -396,6 +405,13 @@ If you want to save it in bower.json file, remember to add flag --save
         console.log("suggestionsMenu not defined");
       }
     },
+
+    _blur: function() {
+        if (this.forceSuggestion){
+            this._inputObjectChanged();
+        }
+    },
+
     /**
      * Callback for keyup event
      *
