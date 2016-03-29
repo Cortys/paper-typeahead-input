@@ -424,9 +424,11 @@ If you want to save it in bower.json file, remember to add flag --save
     },
 
     _blur: function() {
-        if (this.forceSuggestion){
-            this._inputObjectChanged();
-        }
+        setTimeout(function() {
+            if (this.forceSuggestion){
+                this._inputObjectChanged();
+            }
+        }.bind(this), 5);
     },
 
     /**
