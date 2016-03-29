@@ -419,15 +419,20 @@ If you want to save it in bower.json file, remember to add flag --save
           this.inputObject = this._suggestions[index];
         }
         suggestionsMenu.select(index);
+        var input = Polymer.dom(this.root).querySelector('paper-input');
+        input.$.input.focus();
       }
     },
 
     _blur: function() {
         setTimeout(function() {
             if (this.forceSuggestion){
-                this._inputObjectChanged();
+              this._inputObjectChanged();
             }
-        }.bind(this), 5);
+            if (!Polymer.dom(this.root).querySelector('paper-input').focused)
+              this._suggestions = [];
+
+        }.bind(this), 0);
     },
 
     /**
@@ -455,7 +460,7 @@ If you want to save it in bower.json file, remember to add flag --save
         var selectedItem = suggestionsMenu.focusedItem;
         if (typeof(selectedItem) != 'undefined'){
           index = Number(suggestionsMenu.indexOf(selectedItem));
-          index = Math.max(index - 1, -1);
+          index = Math.max(index - 1, 0);
           suggestionsMenu.select(index);
         }
         var input = Polymer.dom(this.root).querySelector('paper-input');
@@ -470,6 +475,7 @@ If you want to save it in bower.json file, remember to add flag --save
 
             if (this.isCandidatesJson == true){
               this.inputObject = this._suggestions[index];
+              this._updateInputValue();
             }
             else{
               this.inputValue = this._suggestions[index];
@@ -480,10 +486,6 @@ If you want to save it in bower.json file, remember to add flag --save
         }
       }
       else{
-        var suggestionsMenu = Polymer.dom(this.root).querySelector('paper-menu');
-        if (suggestionsMenu && typeof(suggestionsMenu) != 'undefined'){
-          suggestionsMenu.select(-1);
-        }
         // if (this.inputValue.length >= 3){
         this._search(this.inputValue.trim());
         // this._suggestions = this._search(this.inputValue.trim());
