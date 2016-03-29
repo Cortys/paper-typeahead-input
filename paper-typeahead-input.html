@@ -391,7 +391,6 @@ If you want to save it in bower.json file, remember to add flag --save
 
         if (this.isCandidatesJson == true){
           this.inputObject = this._suggestions[index];
-          this.inputValue = this._getDisplayValue(this.inputObject);
         }
         else{
           this.inputValue = this._suggestions[index];
@@ -403,6 +402,18 @@ If you want to save it in bower.json file, remember to add flag --save
       }
       else{
         console.log("suggestionsMenu not defined");
+      }
+    },
+    _selectIndex: function(index) {
+      var suggestionsMenu = Polymer.dom(this.root).querySelector('paper-menu');
+      if (suggestionsMenu && typeof(suggestionsMenu) != 'undefined' && this._suggestions.length > index && index >= 0){
+        if (this.isCandidatesJson == true){
+          this.inputObject = this._suggestions[index];
+        }
+        else{
+          this.inputValue = this._suggestions[index];
+        }
+        suggestionsMenu.select(index);
       }
     },
 
@@ -452,7 +463,6 @@ If you want to save it in bower.json file, remember to add flag --save
 
             if (this.isCandidatesJson == true){
               this.inputObject = this._suggestions[index];
-              this.inputValue = this._getDisplayValue(this.inputObject);
             }
             else{
               this.inputValue = this._suggestions[index];
@@ -557,6 +567,7 @@ If you want to save it in bower.json file, remember to add flag --save
                     matched = matched.concat(cuttedMatched);
                     // ptinput._suggestions = ptinput._suggestions.concat(cuttedMatched);
                     ptinput._suggestions = matched;
+                    pt_element._selectIndex(0);
                 }
                 pt_element.remoteUrlSearching = false;
                 pt_element.fire('pt-remote-searching-end',pt_element);
@@ -569,6 +580,7 @@ If you want to save it in bower.json file, remember to add flag --save
       }
       else{
         this._suggestions = matched;
+        pt_element._selectIndex(0);
       }
     }
 
