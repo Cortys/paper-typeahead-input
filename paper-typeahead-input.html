@@ -417,7 +417,6 @@ If you want to save it in bower.json file, remember to add flag --save
       if (suggestionsMenu && typeof(suggestionsMenu) != 'undefined' && index in this._suggestions){
         if (this.isCandidatesJson == true){
           this.inputObject = this._suggestions[index];
-          this._updateInputValue();
         }
         suggestionsMenu.select(index);
       }
